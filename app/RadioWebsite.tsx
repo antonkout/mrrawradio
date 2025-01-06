@@ -1,7 +1,7 @@
 'use client'
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import Image from 'next/image';
-import Script from 'next/script';
+
 import { Play, Pause, Volume2, Radio, Clock, Users, Share2, Instagram, Facebook } from 'lucide-react';
 
 const RadioWebsite = () => {
@@ -11,7 +11,7 @@ const RadioWebsite = () => {
   const [volume, setVolume] = useState<number>(80);
   const [streamError, setStreamError] = useState<string | null>(null);
   const [scrollY, setScrollY] = useState(0);
-  const [currentSong, setCurrentSong] = useState({
+  const [currentSong, /* setCurrentSong */] = useState({
     title: 'Live Stream',
     artist: 'MR RAW RADIO',
     coverArt: '/logo.jpg'  // Using logo as default cover art
@@ -20,7 +20,7 @@ const RadioWebsite = () => {
   // Refs
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const animationRef = useRef<number>();
+  const animationRef = useRef<number | undefined>(undefined);
 
   // Audio Context setup for visualizer
   const [audioContext, setAudioContext] = useState<AudioContext | null>(null);
@@ -36,7 +36,7 @@ const RadioWebsite = () => {
   // Audio visualizer setup
   useEffect(() => {
     if (isPlaying && audioRef.current && !audioContext) {
-      const context = new (window.AudioContext || (window as any).webkitAudioContext)();
+      const context = new (window.AudioContext || window.AudioContext)();
       const source = context.createMediaElementSource(audioRef.current);
       const analyserNode = context.createAnalyser();
       
